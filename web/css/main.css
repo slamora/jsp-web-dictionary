@@ -23,6 +23,12 @@ body {
     font-weight: 300;
 }
 
+#wrapper {
+    min-height: 100%;
+    background: url('../images/bg.png');
+    position: relative;
+}
+
 header#main-header {
     background: url('../images/header_bg.png');
     height: 115px;
@@ -41,7 +47,6 @@ header#main-header #s2-header-title {
 }
 
 #main-container {
-    background: /*url('../images/book_img.png') no-repeat 10% 90%,*/ url('../images/bg.png');
     color: whitesmoke;
     padding-top: 30px;
     font-size: 1.6em;
@@ -68,6 +73,9 @@ header#main-header #s2-header-title {
     background: url('../images/footer_bg.png');
     color: whitesmoke;
     height: 128px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 #main-footer #s2-footer {
     position: relative;
