@@ -110,6 +110,10 @@ header#main-header #s2-header-title {
     text-decoration: none;
 }
 
+#menu .menu-item a:hover {
+    color: #ddd;
+}
+
 #menu .menu-item a.active {
     color: #f77a01;
 }
@@ -132,6 +136,10 @@ header#main-header #s2-header-title {
     padding-right: 60px;
     height: 60px;
     width: 245px;
+}
+
+#search_bar label:hover {
+    cursor: pointer;
 }
 
 #mode {
