@@ -46,6 +46,10 @@ header#main-header #s2-header-title {
     text-transform: uppercase;
 }
 
+#lang {
+    display: none; /* TODO lang bar not working so we hidde it */
+}
+
 #main-container {
     color: whitesmoke;
     padding-top: 30px;
