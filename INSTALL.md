@@ -1,8 +1,46 @@
-+ Import SQL in directory web/_var/DB_creation.sql
-+ JDK >= 6
-+ Tomcat >= 5.5
-+ jdbc-mysql-connector.jar (>=5) /usr/share/java
+# Installing jsp-web-dictionary
+Following instructions asume that you are using a Debian based GNU/Linux.
+
+## Requirements
+- JDK >= 6
+- Tomcat >= 5.5
+- jdbc-mysql-connector.jar (>=5) /usr/share/java
 	- In Ubuntu (or Debian): sudo apt-get install libmysql-java
+
+### Install Tomcat 8
+To get the basic package, we can update our package source list and then install the main package
+```sudo apt-get install tomcat8```
+
+Take a look at the default Tomcat page by going to your IP address or domain followed by `:8080` in your web browser:
+```your_domain_or_ip:8080```
+
+Optional: install Tomcat admin package, these will allow us to use a web interface to control Tomcat.
+```sudo apt-get install tomcat8-admin```
+
+### Install JDK
+```sudo apt-get install default-jdk```
+
+### Optional: configure Tomcat Web Interface
+Edit the file called `/etc/tomcat8/tomcat-users.xml` and define a user:
+```
+<tomcat-users>
+    <user username="admin" password="password" roles="manager-gui,admin-gui"/>
+</tomcat-users>
+```
+NOTE: Choose whatever username and password you would like.
+
+Save your changes and then restart Tomcat to apply the changes.
+```sudo service tomcat8 restart```
+
+
+### Intall JDBC MySQL connector
+```sudo apt-get install libmysql-java```
+
+
+## Deploying jsp-web-dictionary application
+Copy WAR file to `/var/lib/tomcat8/webapps/`
+
++ Import SQL in directory web/_var/DB_creation.sql
 
 + /etc/tomcat5.5/policy.d/04webapps.policy   | $CATALINA_HOME
 	grant codeBase "file:/usr/share/tomcat5.5-webapps/jspWebDict/-" {
