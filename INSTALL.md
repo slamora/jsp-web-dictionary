@@ -37,11 +37,19 @@ Save your changes and then restart Tomcat to apply the changes.
 ```sudo apt-get install libmysql-java```
 
 
-## Deploying jsp-web-dictionary application
-Copy WAR file to `/var/lib/tomcat8/webapps/`
+## Database preparation
+1. Import SQL in directory `web/_var/DB_creation_v2.sql`. This will create a database called `dict` and their tables.
 
-+ Import SQL in directory web/_var/DB_creation.sql
+2. Create a user and grant privileges to access `dict` database.
 
+## DBCP
+[Download Apache Commons DBCP](https://commons.apache.org/proper/commons-dbcp/download_dbcp.cgi)
+```
+## Debian !
+sudo apt-get install libcommons-dbcp-java
+```
+
+## Grant app permissions on Tomcat
 + /etc/tomcat5.5/policy.d/04webapps.policy   | $CATALINA_HOME
 	grant codeBase "file:/usr/share/tomcat5.5-webapps/jspWebDict/-" {
 	   permission java.net.SocketPermission "localhost:3306", "connect,resolve";
@@ -53,10 +61,19 @@ Copy WAR file to `/var/lib/tomcat8/webapps/`
 	  	"accessClassInPackage.org.apache.tomcat.dbcp.*";
 	};
 
-+ Add URIEncoding="UTF-8" in /etc/tomcat6/server.xml --> Connector 8180 or 8080 (Debian)
+
+## Install Apache mod_jk connector
+```
+sudo apt-get install libapache2-mod-jk
+```
+
+Add URIEncoding="UTF-8" in /etc/tomcat6/server.xml --> Connector 8180 or 8080 (Debian)
 NOTE: If you use the mod_jk connector (Tomcat<-->Apache) you should modify this connector too.
 
-+ Configure user and password (to grant access to DB) in META-INF/context.xml
+
+## Deploying jsp-web-dictionary application
+1. Copy WAR file to `/var/lib/tomcat8/webapps/`
+2. Configure user and password (to grant access to DB) in META-INF/context.xml
 
 
 ###################
@@ -75,9 +92,12 @@ org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory]
 2) Datasource: Cannot load JDBC driver class 'com.mysql.jdbc.Driver'
 
  -> Solution: check that you have the "mysql-connector-java.jar". Frecuently 
-	it can be in the /usr/share/java path and you only must make a simbolic 
-	link in /usr/share/tomcat5.5/common/lib
-	#> ln -s /usr/share/java/mysql-connector-java.jar mysql-connector-java.jar
+	it can be found in the /usr/share/java path and will be referenced makin a simbolic 
+	link 
+    ```
+    cd /usr/share/tomcat8/lib
+    sudo ln -s ../../java/mysql-connector-java.jar mysql-connector-java.jar
+    ```
 
 3) java.security.AccessControlException: access denied (java.lang.RuntimePermission accessClassInPackage.org.apache.tomcat.dbcp.pool.impl)
 
@@ -97,6 +117,25 @@ org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory]
 	 grant codeBase "file:/var/lib/tomcat5.5/webapps/jspWebDict/-" {
        permission java.net.SocketPermission "localhost:3306", "connect,resolve";
 	 };
+
+## Tomcat 8 cannot load website
+Output messages in catalina.out
+```
+WARNING: Failed to scan [file:/usr/share/java/el-api-3.0.jar] from classloader hierarchy
+java.io.FileNotFoundException: /usr/share/java/el-api-3.0.jar (No such file or directory)
+    at java.util.zip.ZipFile.open(Native Method)
+    at java.util.zip.ZipFile.<init>(ZipFile.java:219)
+    at java.util.zip.ZipFile.<init>(ZipFile.java:149)
+    at java.util.jar.JarFile.<init>(JarFile.java:166)
+    at java.util.jar.JarFile.<init>(JarFile.java:130)
+    at org.apache.tomcat.util.scan.JarFileUrlJar.<init>(JarFileUrlJar.java:60)
+    ...
+```
+
+Solution described at [stackoverflow](https://stackoverflow.com/a/41138185/1538221) 
+```
+sudo apt-get install libservlet3.1-java
+```
 
 ###############################################
 + Java libraries [SOLVED if you have installed "libmysql-java" package]
