@@ -67,9 +67,18 @@ sudo apt-get install libcommons-dbcp-java
 sudo apt-get install libapache2-mod-jk
 ```
 
+And enable the connector on the Tomcat 8 configuration
+```
+# /etc/tomcat8/server.xml
+<Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+```
+
 Add URIEncoding="UTF-8" in /etc/tomcat6/server.xml --> Connector 8180 or 8080 (Debian)
 NOTE: If you use the mod_jk connector (Tomcat<-->Apache) you should modify this connector too.
-
+```
+# /etc/tomcat8/server.xml
+<Connector port="8009" protocol="AJP/1.3" redirectPort="8443" URIEncoding="UTF-8" />
+```
 
 ## Deploying jsp-web-dictionary application
 1. Copy WAR file to `/var/lib/tomcat8/webapps/`
