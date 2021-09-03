@@ -18,6 +18,10 @@
             case 2:
                 String redirectURL = "index.jsp?id=" + Entry.getRandom();
                 response.sendRedirect(redirectURL);
+                /* Keep this line to avoid breaking the loop:
+                   It renders the page and then performs the redirect.
+                 */
+                szAction = "WEB-INF/jspf/about.jsp";
                 break;
             case 3:
                 szAction = "WEB-INF/jspf/about.jsp";
